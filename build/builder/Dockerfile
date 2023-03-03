@@ -163,17 +163,19 @@ RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key ad
     openjdk-8-jre \
     openssh-client \
     yarn \
-    google-chrome-stable \
+    awscli \
     unzip
 
+# disabled : using other cloud-providers    google-chrome-stable \
+# disabled : TBD : check for arch to install correct version of awscli
 # awscli - roachtests
 # NB: we don't use apt-get because we need an up to date version of awscli
 # If you update the below, you should probably also update build/bazelbuilder/Dockerfile.
-RUN curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.0.30.zip" -o "awscliv2.zip" && \
- echo "7ee475f22c1b35cc9e53affbf96a9ffce91706e154a9441d0d39cbf8366b718e  awscliv2.zip" | sha256sum -c - && \
- unzip awscliv2.zip && \
- ./aws/install && \
- rm -rf aws awscliv2.zip
+# RUN curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.0.30.zip" -o "awscliv2.zip" && \
+ # echo "7ee475f22c1b35cc9e53affbf96a9ffce91706e154a9441d0d39cbf8366b718e  awscliv2.zip" | sha256sum -c - && \
+ # unzip awscliv2.zip && \
+ # ./aws/install && \
+ # rm -rf aws awscliv2.zip
 
 # git - Upgrade to a more modern version
 RUN DEBIAN_FRONTEND=noninteractive apt-get install dh-autoreconf libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev -y && \
@@ -208,11 +210,12 @@ RUN rm -rf /tmp/* /var/lib/apt/lists/*
 RUN ln -s /go/src/github.com/cockroachdb/cockroach/build/builder/mkrelease.sh /usr/local/bin/mkrelease \
   && ln -s /usr/bin/bazel-3.6.0 /usr/bin/bazel
 
-RUN curl -fsSL https://github.com/benesch/autouseradd/releases/download/1.2.0/autouseradd-1.2.0-amd64.tar.gz -o autouseradd.tar.gz \
-  && echo 'f7b0cf67564044c31ffc5e84c961726098b88b0296a57c84421659d56434a365 autouseradd.tar.gz' | sha256sum -c - \
-  && tar xzf autouseradd.tar.gz -C / --strip-components 1 \
-  && chmod +x /usr/local/bin/autouseradd \
-  && rm autouseradd.tar.gz
+# disabled : TBD : update for correct arch
+#RUN curl -fsSL https://github.com/benesch/autouseradd/releases/download/1.2.0/autouseradd-1.2.0-amd64.tar.gz -o autouseradd.tar.gz \
+  #&& echo 'f7b0cf67564044c31ffc5e84c961726098b88b0296a57c84421659d56434a365 autouseradd.tar.gz' | sha256sum -c - \
+  #&& tar xzf autouseradd.tar.gz -C / --strip-components 1 \
+  #&& chmod +x /usr/local/bin/autouseradd \
+  #&& rm autouseradd.tar.gz
 
 COPY entrypoint.sh /usr/local/bin
 

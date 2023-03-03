@@ -219,8 +219,9 @@ RUN ln -s /go/src/github.com/cockroachdb/cockroach/build/builder/mkrelease.sh /u
 RUN git clone https://github.com/benesch/autouseradd.git /autouseradd && \
   cd /autouseradd;make && \
   cp /autouseradd/autouseradd /usr/local/bin/autouseradd && \
+  chmod +x /usr/local/bin/autouseradd && \
   rm -rf /autouseradd
 
 COPY entrypoint.sh /usr/local/bin
 
-ENTRYPOINT ["autouseradd", "--user", "roach", "--no-create-home", "--", "entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/autouseradd", "--user", "roach", "--no-create-home", "--", "entrypoint.sh"]
